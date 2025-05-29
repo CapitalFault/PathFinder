@@ -41,11 +41,12 @@ public class Grid {
                 }
             }
             neighbors.add(neighbor);
-
-            //Node neighbor = getNode(node.row + d[0], node.col + d[1]);
-            //if (neighbor != null) neighbors.add(neighbor);
         }
         return neighbors;
+    }
+
+    public boolean isInBounds(int col, int row) {
+        return row >= 0 && row < rows && col >= 0 && col < cols;
     }
 
     public Node[][] getGrid() {

@@ -13,6 +13,10 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout());
         add(visualizerPanel, BorderLayout.CENTER);
 
+        ButtonPanel buttonPanel = new ButtonPanel();
+        add(buttonPanel, BorderLayout.SOUTH);
+
+
         pack();
         setVisible(true);
 

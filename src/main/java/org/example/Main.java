@@ -31,6 +31,7 @@ public class Main {
         grid.getNode(1, 8).isWall = true;
         grid.getNode(0, 9).isWall = true;
 
+
         Node start = grid.getNode(0, 0);
         Node end = grid.getNode(9, 9);
 

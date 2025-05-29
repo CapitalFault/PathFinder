@@ -5,6 +5,8 @@ import org.example.model.Node;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VisualizerPanel extends JPanel {
     private final Grid grid;
@@ -13,6 +15,22 @@ public class VisualizerPanel extends JPanel {
     public VisualizerPanel(Grid grid) {
         this.grid = grid;
         setPreferredSize(new Dimension(grid.getRows() * cellSize, grid.getCols() * cellSize));
+
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int col = e.getX() / cellSize;
+                int row = e.getY() / cellSize;
+
+                if (grid.isInBounds(row, col)) {
+                    Node node = grid.getNode(row, col);
+                    node.isWall = !node.isWall;
+                    System.out.println("Klick auf Zelle: " + row + ", " + col);
+                    repaint();
+                }
+
+            }
+        });
     }
 
     @Override
@@ -34,5 +52,7 @@ public class VisualizerPanel extends JPanel {
 
             }
         }
+
+
     }
 }
