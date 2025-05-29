@@ -1,14 +1,19 @@
 package org.example;
 
+import org.example.gui.MainFrame;
 import org.example.model.Grid;
 import org.example.model.Node;
 import org.example.logic.DijkstraStepSolver;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(MainFrame::new);
+
         int rows = 10;
         int cols = 10;
 
@@ -18,6 +23,13 @@ public class Main {
         grid.getNode(3, 3).isWall = true;
         grid.getNode(3, 4).isWall = true;
         grid.getNode(3, 5).isWall = true;
+        grid.getNode(3, 6).isWall = true;
+        grid.getNode(4, 2).isWall = true;
+        grid.getNode(5, 1).isWall = true;
+        grid.getNode(6, 0).isWall = true;
+        grid.getNode(2, 7).isWall = true;
+        grid.getNode(1, 8).isWall = true;
+        grid.getNode(0, 9).isWall = true;
 
         Node start = grid.getNode(0, 0);
         Node end = grid.getNode(9, 9);
