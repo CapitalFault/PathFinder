@@ -7,6 +7,9 @@ public class Grid {
     private final int rows;
     private final int cols;
 
+    private Node currentStart = null;
+    private Node currentEnd = null;
+
     public Grid(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
@@ -14,6 +17,23 @@ public class Grid {
         for (int r = 0; r < rows; r++)
             for (int c = 0; c < cols; c++)
                 grid[r][c] = new Node(r, c);
+
+        if (rows > 0 && cols > 0){
+            this.currentStart = getNode(0,0);
+            if (this.currentStart != null) {
+                this.currentStart.isStart = true;
+            }
+
+            int endRow = Math.max(0, rows -1);
+            int endCol = Math.max(0, cols -1);
+            this.currentEnd = getNode(endRow, endCol);
+            if (this.currentEnd != null) {
+                this.currentEnd.isEnd = true;
+                if (this.currentStart == this.currentEnd && (rows > 1 || cols > 1)) {
+                    System.err.println("Start- und Endknoten sind gleich!");
+                }
+            }
+        }
     }
 
     public Node getNode(int row, int col) {
@@ -45,7 +65,7 @@ public class Grid {
         return neighbors;
     }
 
-    public boolean isInBounds(int col, int row) {
+    public boolean isInBounds(int row, int col) {
         return row >= 0 && row < rows && col >= 0 && col < cols;
     }
 
@@ -59,5 +79,21 @@ public class Grid {
 
     public int getRows() {
         return rows;
+    }
+
+    public Node getCurrentStart() {
+        return currentStart;
+    }
+
+    public void setCurrentStart(Node currentStart) {
+        this.currentStart = currentStart;
+    }
+
+    public Node getCurrentEnd() {
+        return currentEnd;
+    }
+
+    public void setCurrentEnd(Node currentEnd) {
+        this.currentEnd = currentEnd;
     }
 }

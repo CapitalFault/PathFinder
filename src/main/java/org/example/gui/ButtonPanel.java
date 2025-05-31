@@ -5,18 +5,41 @@ import java.awt.*;
 
 public class ButtonPanel extends JPanel {
 
+
+
+    JButton startButton;
+    JButton step;
+    JButton setStart;
+    JButton setEnd;
+
     public ButtonPanel() {
-        JButton startButton = new JButton("Start");
+
+        startButton = new JButton("Start");
+        step = new JButton("Step");
+        setStart = new JButton("Set Start");
+        setEnd = new JButton("Set End");
+
         add(startButton, BorderLayout.SOUTH);
-
-        JButton autoSolve = new JButton("autoSolve");
-        add(autoSolve);
-
-        JButton setStart = new JButton("Set Start");
+        add(step);
         add(setStart);
-
-        JButton setEnd = new JButton("Set End");
         add(setEnd);
+
+    }
+
+    public JButton getStartButton() {
+        return startButton;
+    }
+
+    public JButton getStep() {
+        return step;
+    }
+
+    public JButton getSetStart() {
+        return setStart;
+    }
+
+    public JButton getSetEnd() {
+        return setEnd;
     }
 
 }

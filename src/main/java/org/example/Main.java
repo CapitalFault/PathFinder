@@ -19,6 +19,7 @@ public class Main {
 
         Grid grid = new Grid(rows, cols);
 
+        /*
         // Beispiel: ein paar Wände setzen
         grid.getNode(3, 3).isWall = true;
         grid.getNode(3, 4).isWall = true;
@@ -48,7 +49,7 @@ public class Main {
         // Pfad ausgeben
         List<Node> path = solver.reconstructPath();
         System.out.println("Pfad gefunden:\n");
-        printGridWithPath(grid, start, end, path);
+        printGridWithPath(grid, start, end, path); */
     }
 
     private static void printGrid(Grid grid, Node start, Node end) {
