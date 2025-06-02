@@ -59,12 +59,16 @@ public class MainFrame extends JFrame {
                     solver.step();
                     SwingUtilities.invokeLater(() -> visualizerPanel.repaint());
                     try {
-                        Thread.sleep(50);
+                        Thread.sleep(15);
                     } catch (InterruptedException ex) {
                         Thread.currentThread().interrupt();
                         ex.printStackTrace();
                         break;
                     }
+                }
+                Node test = grid.getNode(5,5);
+                if (test.visited) {
+                    System.out.println(test.distance);
                 }
                 SwingUtilities.invokeLater(() -> visualizerPanel.repaint());
             }).start();
@@ -95,6 +99,12 @@ public class MainFrame extends JFrame {
 
             System.out.println("SetEnd");
         });
+
+        buttonPanel.getReset().addActionListener(e -> {
+            onGridOrEndpointChanged();
+        });
+
+
     }
 
     public void onGridOrEndpointChanged() {

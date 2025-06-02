@@ -11,6 +11,7 @@ public class ButtonPanel extends JPanel {
     JButton step;
     JButton setStart;
     JButton setEnd;
+    JButton reset;
 
     public ButtonPanel() {
 
@@ -18,11 +19,13 @@ public class ButtonPanel extends JPanel {
         step = new JButton("Step");
         setStart = new JButton("Set Start");
         setEnd = new JButton("Set End");
+        reset = new JButton("Reset");
 
         add(startButton, BorderLayout.SOUTH);
         add(step);
         add(setStart);
         add(setEnd);
+        add(reset);
 
     }
 
@@ -41,5 +44,7 @@ public class ButtonPanel extends JPanel {
     public JButton getSetEnd() {
         return setEnd;
     }
+
+    public JButton getReset() {return reset;}
 
 }
