@@ -82,7 +82,7 @@ public class VisualizerPanel extends JPanel {
                 Node node = grid.getNode(row, col);
                 
                 if (node.isWall) graphics.setColor(Color.BLACK);
-                else if (node.visited) graphics.setColor(Color.YELLOW);
+                else if (node.visited && !node.isStart && !node.isEnd) graphics.setColor(colorBasedOnDistance(node));
                 else if (node.isStart) graphics.setColor(Color.GREEN);
                 else if (node.isEnd) graphics.setColor(Color.RED);
                 else graphics.setColor(Color.WHITE);
@@ -96,5 +96,32 @@ public class VisualizerPanel extends JPanel {
         }
 
 
+    }
+
+    private Color colorBasedOnDistance(Node node) {
+        Color startColor = new Color(173, 216, 230);
+        Color endColor = new Color(0, 0, 100);
+        Color cellColor;
+        
+        double maxDist = 0;
+        int minDist = 1;
+        double dist = node.distance;
+
+        for (int r = 0; r < grid.getRows(); r++) {
+            for (int c = 0; c < grid.getCols(); c++) {
+                Node n = grid.getNode(r, c);
+                if (n.visited && n.distance < Integer.MAX_VALUE && n.distance > maxDist) {
+                    maxDist = n.distance;
+                }
+            }
+        }
+
+        float t = (float)(node.distance / maxDist);
+        int red   = (int)(startColor.getRed() + t * (endColor.getRed() - startColor.getRed()));
+        int green = (int)(startColor.getGreen() + t * (endColor.getGreen() - startColor.getGreen()));
+        int blue  = (int)(startColor.getBlue() + t * (endColor.getBlue() - startColor.getBlue()));
+        cellColor = new Color(red, green, blue);
+        
+        return  cellColor;
     }
 }

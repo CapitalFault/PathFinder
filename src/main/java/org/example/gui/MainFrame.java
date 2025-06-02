@@ -66,7 +66,9 @@ public class MainFrame extends JFrame {
                         break;
                     }
                 }
-                Node test = grid.getNode(5,5);
+                JOptionPane.showMessageDialog(this,
+                        "Distanz zwischen Start und Ende ist " + grid.getCurrentEnd().distance);
+                Node test = grid.getCurrentEnd();
                 if (test.visited) {
                     System.out.println(test.distance);
                 }
