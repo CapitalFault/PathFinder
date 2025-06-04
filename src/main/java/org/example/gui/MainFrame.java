@@ -6,10 +6,15 @@ import org.example.model.Node;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
+import java.util.List;
+
 
 public class MainFrame extends JFrame {
     public static boolean setStart = false;
     public static boolean setEnd = false;
+
+    public List<Node> path;
 
     private Grid grid;
     private DijkstraStepSolver solver;
@@ -40,8 +45,6 @@ public class MainFrame extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
 
-
-
         setLayout(new BorderLayout());
 
         add(visualizerPanel, BorderLayout.CENTER);
@@ -50,8 +53,6 @@ public class MainFrame extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-
-        //grid.getNode(5,5).isWall = true;
 
         buttonPanel.getStartButton().addActionListener(e -> {
             new Thread(() -> {
@@ -66,13 +67,11 @@ public class MainFrame extends JFrame {
                         break;
                     }
                 }
+
+                path = solver.reconstructPath();
+                visualizerPanel.repaint();
                 JOptionPane.showMessageDialog(this,
                         "Distanz zwischen Start und Ende ist " + grid.getCurrentEnd().distance);
-                Node test = grid.getCurrentEnd();
-                if (test.visited) {
-                    System.out.println(test.distance);
-                }
-                SwingUtilities.invokeLater(() -> visualizerPanel.repaint());
             }).start();
         });
 
@@ -82,8 +81,10 @@ public class MainFrame extends JFrame {
                     solver.step();
                     visualizerPanel.repaint();
                 } else {
-                    System.out.println("Finished!");
+                    path = solver.reconstructPath();
                     visualizerPanel.repaint();
+                    JOptionPane.showMessageDialog(this,
+                            "Distanz zwischen Start und Ende ist " + grid.getCurrentEnd().distance);
                 }
             }).start();
         });
@@ -110,6 +111,7 @@ public class MainFrame extends JFrame {
     }
 
     public void onGridOrEndpointChanged() {
+        this.path = null;
         for (int row = 0; row < grid.getRows(); row++) {
             for (int col = 0; col < grid.getCols(); col++) {
                 Node node = grid.getNode(row, col);

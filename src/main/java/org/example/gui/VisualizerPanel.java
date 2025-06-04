@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class VisualizerPanel extends JPanel {
     private final Grid grid;
@@ -76,15 +77,21 @@ public class VisualizerPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
+        List<Node> solvedPath = mainFrame.path;
 
         for(int row = 0; row < grid.getRows(); row++){
             for (int col = 0; col < grid.getCols(); col++){
                 Node node = grid.getNode(row, col);
-                
+
+
                 if (node.isWall) graphics.setColor(Color.BLACK);
-                else if (node.visited && !node.isStart && !node.isEnd) graphics.setColor(colorBasedOnDistance(node));
+
                 else if (node.isStart) graphics.setColor(Color.GREEN);
                 else if (node.isEnd) graphics.setColor(Color.RED);
+                else if (solvedPath != null && !solvedPath.isEmpty() && solvedPath.contains(node)) {
+                    graphics.setColor(Color.MAGENTA);
+                }
+                else if (node.visited && !node.isStart && !node.isEnd) graphics.setColor(colorBasedOnDistance(node));
                 else graphics.setColor(Color.WHITE);
 
                 graphics.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
@@ -97,6 +104,8 @@ public class VisualizerPanel extends JPanel {
 
 
     }
+
+
 
     private Color colorBasedOnDistance(Node node) {
         Color startColor = new Color(173, 216, 230);
