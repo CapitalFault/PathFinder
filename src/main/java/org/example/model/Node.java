@@ -6,7 +6,8 @@ public class Node {
     public boolean visited = false;
     public boolean isStart = false;
     public boolean isEnd = false;
-    public double distance = Integer.MAX_VALUE;
+    public double distance = Double.POSITIVE_INFINITY;
+    public double fScore = Double.POSITIVE_INFINITY;
     public Node previous = null;
 
     public Node(int row, int col) {

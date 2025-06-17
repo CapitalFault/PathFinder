@@ -101,11 +101,7 @@ public class VisualizerPanel extends JPanel {
 
             }
         }
-
-
     }
-
-
 
     private Color colorBasedOnDistance(Node node) {
         Color startColor = new Color(173, 216, 230);

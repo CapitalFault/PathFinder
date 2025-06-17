@@ -5,7 +5,7 @@ import org.example.model.Grid;
 
 import java.util.*;
 
-public class DijkstraStepSolver {
+public class DijkstraStepSolver implements StepSolver {
     private final Grid grid;
     private final Node start;
     private final Node end;
@@ -25,11 +25,13 @@ public class DijkstraStepSolver {
         queue.add(start);
     }
 
+    @Override
     public boolean isFinished() {
         return finished;
     }
 
     // Führt einen einzelnen Schritt der Dijkstra-Suche aus
+    @Override
     public Node step() {
         if (queue.isEmpty()) {
             finished = true;
@@ -63,6 +65,7 @@ public class DijkstraStepSolver {
     }
 
     // Kann z. B. nach isFinished() aufgerufen werden
+    @Override
     public List<Node> reconstructPath() {
         List<Node> path = new ArrayList<>();
         Node current = end;

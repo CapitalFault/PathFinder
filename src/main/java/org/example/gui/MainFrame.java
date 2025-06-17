@@ -1,6 +1,8 @@
 package org.example.gui;
 
+import org.example.logic.AStarStepSolver;
 import org.example.logic.DijkstraStepSolver;
+import org.example.logic.StepSolver;
 import org.example.model.Grid;
 import org.example.model.Node;
 
@@ -17,7 +19,7 @@ public class MainFrame extends JFrame {
     public List<Node> path;
 
     private Grid grid;
-    private DijkstraStepSolver solver;
+    private StepSolver solver;
     private VisualizerPanel visualizerPanel;
     private ButtonPanel buttonPanel;
 
@@ -26,12 +28,12 @@ public class MainFrame extends JFrame {
         setTitle("Path Finder");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        this.grid = new Grid(10, 25);
+        this.grid = new Grid(25, 25);
         this.visualizerPanel = new VisualizerPanel(grid, this);
         this.buttonPanel = new ButtonPanel();
 
         if (grid.getCurrentStart() != null && grid.getCurrentEnd() != null){
-            this.solver = new DijkstraStepSolver(grid, grid.getCurrentStart(),
+            this.solver = new AStarStepSolver(grid, grid.getCurrentStart(),
                     grid.getCurrentEnd());
         } else {
             System.err.println("Start- und Endknoten nicht gesetzt!");
@@ -125,7 +127,7 @@ public class MainFrame extends JFrame {
         Node currentEnd = grid.getCurrentEnd();
 
         if (currentStart != null && currentEnd != null) {
-            this.solver = new DijkstraStepSolver(grid, currentStart, currentEnd);
+            this.solver = new AStarStepSolver(grid, currentStart, currentEnd);
             System.out.println("Solver aktualisiert!");
 
             if (buttonPanel != null) {
@@ -147,7 +149,7 @@ public class MainFrame extends JFrame {
         this.visualizerPanel.repaint();
     }
 
-    public DijkstraStepSolver getSolver() {
+    public StepSolver getSolver() {
         return this.solver;
     }
 }
