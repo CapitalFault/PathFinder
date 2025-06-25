@@ -64,7 +64,7 @@ public class DijkstraStepSolver implements StepSolver {
         return current; // für Animation: der zuletzt bearbeitete Knoten
     }
 
-    // Kann z. B. nach isFinished() aufgerufen werden
+    // Kann z.B. nach isFinished() aufgerufen werden
     @Override
     public List<Node> reconstructPath() {
         List<Node> path = new ArrayList<>();

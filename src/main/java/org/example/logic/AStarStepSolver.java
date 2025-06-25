@@ -21,7 +21,7 @@ public class AStarStepSolver implements StepSolver {
         queue = new PriorityQueue<>(Comparator.comparingDouble(n -> n.fScore));
         visited = new HashSet<>();
 
-        start.distance = 0;
+        start.distance = 0.0;
         start.fScore = heuristic(start, end);
         queue.add(start);
     }
@@ -40,6 +40,12 @@ public class AStarStepSolver implements StepSolver {
         }
 
         Node current = queue.poll();
+
+        //System.out.println("F Score: " + current.fScore);
+        //System.out.println("Distance: " + current.distance);
+        //System.out.println("Heuristic: " + heuristic(current, end));
+        //System.out.println(" ");
+
         if (visited.contains(current)) return null;
 
         visited.add(current);
@@ -54,7 +60,7 @@ public class AStarStepSolver implements StepSolver {
             if (visited.contains(neighbor) || neighbor.isWall) continue;
 
             double moveCost = getMoveCost(current, neighbor);
-            double newDist = current.distance + moveCost; // Annahme: Gewicht = 1
+            double newDist = current.distance + moveCost;
             if (newDist < neighbor.distance) {
                 neighbor.distance = newDist;
                 neighbor.fScore = newDist + heuristic(neighbor, end);
