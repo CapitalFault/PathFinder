@@ -8,6 +8,7 @@ import org.example.model.Node;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class MainFrame extends JFrame {
     private StepSolver solver;
     private VisualizerPanel visualizerPanel;
     private ButtonPanel buttonPanel;
+    private SettingsPanel settingsPanel;
 
 
     public MainFrame() {
@@ -31,19 +33,10 @@ public class MainFrame extends JFrame {
         this.grid = new Grid(25, 25);
         this.visualizerPanel = new VisualizerPanel(grid, this);
         this.buttonPanel = new ButtonPanel();
+        this.settingsPanel = new SettingsPanel();
 
         if (grid.getCurrentStart() != null && grid.getCurrentEnd() != null){
-            if (buttonPanel.getSetAlgorithm().getSelectedItem().equals("A*")) {
-                this.solver = new AStarStepSolver(grid, grid.getCurrentStart(),
-                        grid.getCurrentEnd());
-            } else if (buttonPanel.getSetAlgorithm().getSelectedItem().equals("Dijkstra")) {
-                this.solver = new DijkstraStepSolver(grid, grid.getCurrentStart(),
-                        grid.getCurrentEnd());
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "Something went wrong with the algorithm selection!");
-            }
-
+            setCurrentAlgorithm();
         } else {
             System.err.println("Start- und Endknoten nicht gesetzt!");
             buttonPanel.getStartButton().setEnabled(false);
@@ -56,10 +49,11 @@ public class MainFrame extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
 
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(2,2));
 
         add(visualizerPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
+        add(settingsPanel, BorderLayout.NORTH);
 
 
         pack();
@@ -119,11 +113,58 @@ public class MainFrame extends JFrame {
             onGridOrEndpointChanged();
         });
 
-        buttonPanel.getSetAlgorithm().addActionListener(e -> {
-            String selectedAlgorithm = (String) buttonPanel.getSetAlgorithm().getSelectedItem();
+        settingsPanel.getSetAlgorithm().addActionListener(e -> {
+            String selectedAlgorithm = (String) settingsPanel.getSetAlgorithm().getSelectedItem();
             System.out.println(selectedAlgorithm);
             onGridOrEndpointChanged();
         });
+
+        settingsPanel.getSaveButton().addActionListener(e -> {
+            int row = 0;
+            int col = 0;
+            try {
+                settingsPanel.getCols().commitEdit();
+                settingsPanel.getRows().commitEdit();
+
+                Object rows = settingsPanel.getRows().getValue();
+                Object cols = settingsPanel.getCols().getValue();
+                if (rows instanceof Integer && cols instanceof Integer) {
+                    row = (Integer) rows;
+                    col = (Integer) cols;
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                            "Keine gültige Zahl eingegeben!");
+                }
+                System.out.println(row + "+" + col);
+                onGridSizeChanged(row, col);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(this,
+                        "Fehler bei der eingabe!");
+
+            }
+        });
+    }
+
+    public void setCurrentAlgorithm() {
+        if (settingsPanel.getSetAlgorithm().getSelectedItem().equals("A*")) {
+            this.solver = new AStarStepSolver(grid, grid.getCurrentStart(),
+                    grid.getCurrentEnd());
+        } else if (settingsPanel.getSetAlgorithm().getSelectedItem().equals("Dijkstra")) {
+            this.solver = new DijkstraStepSolver(grid, grid.getCurrentStart(),
+                    grid.getCurrentEnd());
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Something went wrong with the algorithm selection!");
+        }
+    }
+
+    public void onGridSizeChanged(int rows, int cols) {
+        this.grid = new Grid(rows, cols);
+        remove(visualizerPanel);
+        this.visualizerPanel = new VisualizerPanel(this.grid, this);
+        add(visualizerPanel, BorderLayout.CENTER);
+        visualizerPanel.revalidate();
+        onGridOrEndpointChanged();
     }
 
     public void onGridOrEndpointChanged() {
@@ -141,40 +182,34 @@ public class MainFrame extends JFrame {
         Node currentEnd = grid.getCurrentEnd();
 
         if (currentStart != null && currentEnd != null) {
-            if (grid.getCurrentStart() != null && grid.getCurrentEnd() != null){
-                if (buttonPanel.getSetAlgorithm().getSelectedItem().equals("A*")) {
-                    this.solver = new AStarStepSolver(grid, grid.getCurrentStart(),
-                            grid.getCurrentEnd());
-                } else if (buttonPanel.getSetAlgorithm().getSelectedItem().equals("Dijkstra")) {
-                    this.solver = new DijkstraStepSolver(grid, grid.getCurrentStart(),
-                            grid.getCurrentEnd());
-                } else {
-                    JOptionPane.showMessageDialog(this,
-                            "Something went wrong with the algorithm selection!");
+            if (grid.getCurrentStart() != null && grid.getCurrentEnd() != null) {
+                setCurrentAlgorithm();
+
+                System.out.println("Solver aktualisiert!");
+
+                if (buttonPanel != null) {
+                    buttonPanel.getStartButton().setEnabled(true);
+                    buttonPanel.getStep().setEnabled(true);
                 }
-            System.out.println("Solver aktualisiert!");
-
-            if (buttonPanel != null) {
-                buttonPanel.getStartButton().setEnabled(true);
-                buttonPanel.getStep().setEnabled(true);
-
+            } else {
+                System.err.println("Start- und Endknoten nicht gesetzt!");
+                this.solver = null;
+                if (buttonPanel != null) {
+                    buttonPanel.getStartButton().setEnabled(false);
+                    buttonPanel.getStep().setEnabled(false);
+                }
+                JOptionPane.showMessageDialog(this,
+                         "Start- und Endknoten nicht gesetzt!");
             }
-        } else {
-            System.err.println("Start- und Endknoten nicht gesetzt!");
-            this.solver = null;
-            if (buttonPanel != null) {
-                buttonPanel.getStartButton().setEnabled(false);
-                buttonPanel.getStep().setEnabled(false);
-            }
-            JOptionPane.showMessageDialog(this,
-                    "Start- und Endknoten nicht gesetzt!");
         }
-        }
-
         this.visualizerPanel.repaint();
     }
 
     public StepSolver getSolver() {
         return this.solver;
+    }
+
+    public Grid getGrid() {
+        return grid;
     }
 }

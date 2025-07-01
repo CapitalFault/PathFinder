@@ -11,14 +11,15 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class VisualizerPanel extends JPanel {
-    private final Grid grid;
-    private final int cellSize = 25;
+    private Grid grid;
+    private int cellSize = 25;
     private MainFrame mainFrame;
 
     public VisualizerPanel(Grid grid, MainFrame mainFrame) {
-        this.grid = grid;
+
         setPreferredSize(new Dimension(grid.getCols() * cellSize, grid.getRows() * cellSize));
         this.mainFrame = mainFrame;
+        this.grid = mainFrame.getGrid();
 
 
         addMouseListener(new MouseAdapter() {
@@ -76,8 +77,15 @@ public class VisualizerPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics graphics) {
+        this.grid = mainFrame.getGrid();
         super.paintComponent(graphics);
         List<Node> solvedPath = mainFrame.path;
+
+        if (getHeight() < getWidth()) {
+            cellSize = getHeight() / grid.getRows();
+        } else {
+            cellSize = getWidth() / grid.getCols();
+        }
 
         for(int row = 0; row < grid.getRows(); row++){
             for (int col = 0; col < grid.getCols(); col++){
@@ -129,4 +137,6 @@ public class VisualizerPanel extends JPanel {
         
         return  cellColor;
     }
+
+
 }

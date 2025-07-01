@@ -12,7 +12,7 @@ public class ButtonPanel extends JPanel {
     JButton setStart;
     JButton setEnd;
     JButton reset;
-    JComboBox<String> setAlgorithm;
+
 
 
     public ButtonPanel() {
@@ -24,15 +24,14 @@ public class ButtonPanel extends JPanel {
         reset = new JButton("Reset");
 
 
-        String[] choices = {"Dijkstra", "A*"};
-        setAlgorithm = new JComboBox<>(choices);
+
 
         add(startButton, BorderLayout.SOUTH);
         add(step);
         add(setStart);
         add(setEnd);
         add(reset);
-        add(setAlgorithm);
+
 
     }
 
@@ -53,7 +52,5 @@ public class ButtonPanel extends JPanel {
     }
 
     public JButton getReset() {return reset;}
-
-    public JComboBox<String> getSetAlgorithm() {return setAlgorithm;}
 
 }
